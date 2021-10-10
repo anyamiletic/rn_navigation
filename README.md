@@ -51,7 +51,9 @@ export default App
 ### STACK AND DRAWER NAVIGATORS
 
 - Now we can go about adding the different navigators to our app. Remember, for this first example we want the DrawerNavigator to be the main (always visible) navigator in our app, with the BottomTabNavigator visible if the Home route is focused in the Drawer. Let's begin by adding the following file structure in our project (all the files remain empty for now):
---picture of the folder structure
+
+![folder structure](https://github.com/anyamiletic/rn_navigation/blob/main/assets/file_structure.png?raw=true)
+
 - While our `App.js` remains in the root directory. Next, we will create our Drawer Navigator that contains three routes (our Stack Navigators). For now, the stacks will contain a single screen defined directly in the stack file. In a real app, the stack can contain many screens, but it's important to have at least one. Following are the contents of the stack files:
 
 ###### HomeStackNavigator.js:
