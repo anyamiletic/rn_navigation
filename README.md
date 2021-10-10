@@ -194,7 +194,7 @@ We can see the result now. We have React Navigations default header, an icon to 
 
 Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in HomeStackNavigator and observe what happens:
 
-![folder structure](https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorWithoutScreenOptions.png?raw=true)
+![double header](https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorWithoutScreenOptions.png?raw=true)
 
 The Home components header is rendered below the Drawer Navigators. This is because the parent navigator's UI is rendered on top of child navigator. Since we obviously want only one header, specifying `headerShown: false` for each of the stack navigator's `screenOptions` hides the default stack header. Note that the title displayed in the drawer header is `HomeStack`, not `Home`. If we were to navigate to another screen in HomeStack, the title would not change. Could we have kept the Stack header and hidden the Drawer header? Yes! But for now, we want the default Drawer header as it provides us with an easy way to open the drawer - by pressing the menu icon in the header.
 
