@@ -190,11 +190,11 @@ const App = () => {
 
 We can see the result now. We have React Navigations default header, an icon to open the drawer, and our stacks in the drawer menu. We can navigate freely between those stacks. 
 
-![folder structure](https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigator.gif?raw=true)
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigator.gif" alt="folder structure" width="25%" height="25%" />
 
 Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in HomeStackNavigator and observe what happens:
 
-![double header](https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorWithoutScreenOptions.png?raw=true)
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorWithoutScreenOptions.png" alt="double header" width="25%" height="25%" />
 
 The Home components header is rendered below the Drawer Navigators. This is because the parent navigator's UI is rendered on top of child navigator. Since we obviously want only one header, specifying `headerShown: false` for each of the stack navigator's `screenOptions` hides the default stack header. Note that the title displayed in the drawer header is `HomeStack`, not `Home`. If we were to navigate to another screen in HomeStack, the title would not change. Could we have kept the Stack header and hidden the Drawer header? Yes! But for now, we want the default Drawer header as it provides us with an easy way to open the drawer - by pressing the menu icon in the header.
 
@@ -370,7 +370,7 @@ export default BottomTabNavigator
 
 ```
 
-![bottom tab navigator](https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomNavigatorFinished.png?raw=true)
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomNavigatorFinished.png" alt="bottom tab navigator" width="25%" height="25%" />
 
 For each stack we have specified and icon and a tab label, meaning that for every screen in the Home stack, we will have a highlighted home icon and a Home label. There are many possibilities with `options` and `screenOptions` properties, some of which are explored at https://reactnavigation.org/docs/screen-options/.
 Let's use `screenOptions` in Drawer Navigator to change the header and route names in the drawer menu:
