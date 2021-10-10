@@ -190,7 +190,7 @@ const App = () => {
 
 We can see the result now. We have React Navigations default header, an icon to open the drawer, and our stacks in the drawer menu. We can navigate freely between those stacks. 
 
--- drawerNavigator.mov
+![folder structure](https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigator.gif?raw=true)
 
 Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in HomeStackNavigator and observe what happens:
 
