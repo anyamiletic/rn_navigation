@@ -2,11 +2,17 @@
 
 ### INTRO
 
-Adding navigation to a React Native application is greatly helped by using React Navigation library. It provides different types of navigators, with plenty of customization power. In some simple cases we can get by with using just one navigator, but often times we are presented with a challenge to combine multiple types in an app. Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases; the first one to utilize the Tab Navigator in a single Drawer route, a simpler scenario, then in a more complicated flow, we want the Tab bar to be visible and accessible inside *all* our Drawer routes. In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined. Here is a preview of what we will be building:
+Adding navigation to a React Native application is greatly helped by using React Navigation library. It provides different types of navigators, with plenty of customization power. In some simple cases we can get by with using just one navigator, but often times we are presented with a challenge to combine multiple types in an app. Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases; the first one, a simpler scenario, is to utilize the Tab Navigator in a single Drawer route. then in a more complicated flow, we want the Tab bar to be visible and accessible inside *all* our Drawer routes. In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined.
 
-*gifs of the two cases, finished*
+The example chosen is to build an app for a Hotel chain. Some of the features include booking a room at one of the hotels, browsing the different locations and using reward points. Here is a preview of what we will be building:
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinished.gif" alt="nav finished" width="25%" height="25%" />
+
+We can see right away the use of Drawer and Tab navigators. We will also implement each of the routes as a Stack Navigator, since we now that, for instance, the Book flow will contain multiple screens.
 
 ### GETTING STARTED
+
+*(if this is your first React Native project, please read the official [getting started guide](https://reactnative.dev/docs/0.60/enviroment-setup) before continuing)*
 
 Let's initialize a new project. In your terminal, navigate to en ampty directory and run the following command:
 
@@ -16,7 +22,9 @@ The react version installed at the time of writing was 17.0.2, while the react-n
 
 Next, let's install react navigation and its dependencies:
 
-`$ npm install @react-navigation/native react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated @react-navigation/stack @react-navigation/drawer @react-navigation/bottom-tabs`
+```
+$ npm install @react-navigation/native react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated @react-navigation/stack @react-navigation/drawer @react-navigation/bottom-tabs
+```
 
 If you're developing for IOS, we also need to install the pods:
 
@@ -56,7 +64,7 @@ Now we can go about adding the different navigators to our app. Remember, for th
 
 ![folder structure](https://github.com/anyamiletic/rn_navigation/blob/main/assets/file_structure.png?raw=true)
 
-While our `App.js` remains in the root directory. Next, we will create our Drawer Navigator that contains three routes (our Stack Navigators). For now, the stacks will contain a single screen defined directly in the stack file. In a real app, the stack can contain many screens, but it's important to have at least one. Following are the contents of the stack files:
+You can download the `hotel_logo` from the github repo provided at the end of this tutorial, or use your own. Next, we will create our Drawer Navigator that contains three routes (our Stack Navigators). For now, the stacks will contain a single screen defined directly in the stack file. In a real app, the stack can contain many screens, but it's important to have at least one. Following are the contents of the stack files:
 
 ###### HomeStackNavigator.js:
 
@@ -483,7 +491,7 @@ const styles = StyleSheet.create({
 export default DrawerNavigator
 ```
 
-<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigatorFinished.gif" alt="nav finished" width="25%" height="25%" />
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinished.gif" alt="nav finished" width="25%" height="25%" />
 <a href='https://www.freepik.com/vectors/logo'>Logo vector created by rawpixel.com - www.freepik.com</a>
 
 Let's breakdown all of the changes. First of all, looking at the Drawer Screens, we can change the header of each drawer item separately. You might not want to display a title when the user is in the Tab navigator, but maybe show the company's logo instead. The `headerTitle` prop accepts a string as well as a function - giving us a lot of posibilites for customization. Furthemore, the title shown in the header can be different than the one shown in the drawer menu.
@@ -495,6 +503,8 @@ Finally, let's customize the Drawer menu. We only want to change the route item 
 **** CONCLUSION **** 
 
 write conclusion
+
+The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation)
 
 
 
