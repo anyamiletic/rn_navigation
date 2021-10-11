@@ -68,7 +68,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 const Home = () => (
-  <View>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Home screen!</Text>
   </View>
 )
@@ -96,7 +96,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 const MyRewards = () => (
-  <View>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>MyRewards screen!</Text>
   </View>
 )
@@ -124,7 +124,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 const Locations = () => (
-  <View>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Locations screen!</Text>
   </View>
 )
@@ -214,7 +214,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 const Book = () => (
-  <View>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Book screen!</Text>
   </View>
 )
@@ -242,7 +242,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 const Contact = () => (
-  <View>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Contact screen!</Text>
   </View>
 )
@@ -337,21 +337,21 @@ const BottomTabNavigator = () => {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="HomeStack" component={HomeStackNavigator} options={{
         tabBarIcon: ({ focused }) => (
-          <Icon name="home" size={30} color={focused ? '#3979D9' : '#000'} />
+          <Icon name="home" size={30} color={focused ? '#551E18' : '#000'} />
         ),
         tabBarLabel: () => <Text style={styles.tabBarLabel}>Home</Text>
       }}
       />
       <Tab.Screen name="BookStack" component={BookStackNavigator} options={{
         tabBarIcon: ({ focused }) => (
-          <Icon name="bed" size={30} color={focused ? '#3979D9' : '#000'} />
+          <Icon name="bed" size={30} color={focused ? '#551E18' : '#000'} />
         ),
         tabBarLabel: () => <Text style={styles.tabBarLabel}>Book Room</Text>
       }}
       />
       <Tab.Screen name="ContactStack" component={ContactStackNavigator} options={{
         tabBarIcon: ({ focused }) => (
-          <Icon name="phone" size={30} color={focused ? '#3979D9' : '#000'} />
+          <Icon name="phone" size={30} color={focused ? '#551E18' : '#000'} />
         ),
         tabBarLabel: () => <Text style={styles.tabBarLabel}>Contact Us</Text>
       }}
@@ -371,17 +371,17 @@ export default BottomTabNavigator
 
 ```
 
-<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomNavigatorFinished.png" alt="bottom tab navigator" width="25%" height="25%" />
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomNavFinished.png" alt="bottom tab navigator" width="25%" height="25%" />
 
-For each stack we have specified and icon and a tab label, meaning that for every screen in the Home stack, we will have a highlighted home icon and a Home label. There are many possibilities with `options` and `screenOptions` properties, some of which are explored at https://reactnavigation.org/docs/screen-options/.
+For each stack we have specified an icon and a tab label, meaning that for every screen in the Home stack, we will have a highlighted home icon and a Home label. There are many possibilities with `options` and `screenOptions` properties, some of which are explored at https://reactnavigation.org/docs/screen-options/.
 Let's use `screenOptions` in Drawer Navigator to change the header and route names in the drawer menu:
 
 ###### DrawerNavigator.js:
 
 ```javascript
 import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import MyRewardsStackNavigator from './stack-navigators/MyRewardsStackNavigator'
@@ -390,42 +390,107 @@ import BottomTabNavigator from './BottomTabNavigator'
 
 const Drawer = createDrawerNavigator()
 
+const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      {
+        Object.entries(props.descriptors).map(([key, descriptor], index) => {
+          const focused = index === props.state.index
+          return (
+            <DrawerItem
+              key={key}
+              label={() => (
+                <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>
+                  {descriptor.options.title}
+                </Text>
+              )}
+              onPress={() => descriptor.navigation.navigate(descriptor.route.name)}
+              style={[styles.drawerItem, focused ? styles.drawerItemFocused : null]}
+            />
+          )
+        })
+      }
+    </DrawerContentScrollView>
+  )
+}
+
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator screenOptions={({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: '#551E18',
+        height: 50,
+      },
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.headerLeft}>
+          <Icon name="bars" size={20} color="#fff" />
+        </TouchableOpacity>
+      ),
+    })}
+                      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen name="HomeTabs" component={BottomTabNavigator} options={{
         title: 'Home',
-        headerTitle: () => <Icon name="home" size={30} color="#3979D9" />,
+        headerTitle: () => <Image source={require('../assets/hotel_logo.jpg')} />,
         headerRight: () => (
           <View style={styles.headerRight}>
-            <Icon name="bell" size={20} color="#000" />
+            <Icon name="bell" size={20} color="#fff" />
           </View>
         ),
       }}/>
       <Drawer.Screen name="MyRewardsStack" component={MyRewardsStackNavigator} options={{
         title: 'My Rewards',
-        headerTitle: 'My Rewards',
+        headerTitle: () => <Text style={styles.headerTitle}>My Rewards</Text>,
       }}/>
       <Drawer.Screen name="LocationsStack" component={LocationsStackNavigator} options={{
         title: 'Locations',
-        headerTitle: 'Our Locations',
+        headerTitle: () => <Text style={styles.headerTitle}>Our Locations</Text>,
       }}/>
     </Drawer.Navigator>
   )
 }
 
 const styles = StyleSheet.create({
+  headerLeft: {
+    marginLeft: 15,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '500',
+  },
   headerRight: {
     marginRight: 15,
+  },
+  // drawer content
+  drawerLabel: {
+    fontSize: 14,
+  },
+  drawerLabelFocused: {
+    fontSize: 14,
+    color: '#551E18',
+    fontWeight: '500',
+  },
+  drawerItem: {
+    height: 50,
+    justifyContent: 'center'
+  },
+  drawerItemFocused: {
+    backgroundColor: '#ba9490',
   },
 })
 
 export default DrawerNavigator
 ```
 
-<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorFinished.gif" alt="folder structure" width="25%" height="25%" />
-As you can see, we can change the header of each drawer item separately. You might not want to display a title when the user is in the Tab navigator, but maybe show the companys logo instead. We see as well that the `headerTitle` prop accepts a string as well as a function - giving us a lot of posibilites for customization. Furthemore, the title shown in the header can be different than the one shown in the drawer menu.
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigatorFinished.gif" alt="nav finished" width="25%" height="25%" />
+<a href='https://www.freepik.com/vectors/logo'>Logo vector created by rawpixel.com - www.freepik.com</a>
 
+Let's breakdown all of the changes. First of all, looking at the Drawer Screens, we can change the header of each drawer item separately. You might not want to display a title when the user is in the Tab navigator, but maybe show the company's logo instead. The `headerTitle` prop accepts a string as well as a function - giving us a lot of posibilites for customization. Furthemore, the title shown in the header can be different than the one shown in the drawer menu.
+
+Next, we want to change the look of the header to fit better with our client's brand. We can do this by passing a function to DrawerNavigator's `screenOptions` and specifying header style and components. `ScreenOptions` also receives the `route` prop. We are passing a function to `headerLeft` that renders our menu icon, and toggles the drawer - this toggle function is available in the `navigation` object.
+
+Finally, let's customize the Drawer menu. We only want to change the route item styles for now, and unfortunately there isn't a simple DrawerNavigation prop that enables us to do this. Instead, we must pass a custom drawerContent function that enables us to render a completely custom component for each item. We are using the passed props to iterate through these items, but we could also render more routes using `<DrawerItem>`, or add an image component at the top of `<DrawerContentScrollView>`, or any number of other options.
 
 **** CONCLUSION **** 
 
