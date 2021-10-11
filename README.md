@@ -200,7 +200,7 @@ const App = () => {
 
 We can see the result now. We have React Navigations default header, an icon to open the drawer, and our stacks in the drawer menu. We can navigate freely between those stacks. 
 
-<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigator.gif" alt="folder structure" width="25%" height="25%" />
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavInitial.gif" alt="folder structure" width="25%" height="25%" />
 
 Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in HomeStackNavigator and observe what happens:
 
@@ -319,7 +319,7 @@ const DrawerNavigator = () => {
 
 Let's look at what we get:
 
-<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/TabNavigation.gif" alt="folder structure" width="25%" height="25%" />
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomTabNavInitial.gif" alt="folder structure" width="25%" height="25%" />
 
 When we are in the first route in DrawerNavigator, we can see the bottom tabs and navigate between them. If we move to another route in the Drawer, the tabs are no longer visible (since the tab navigator is just one of the drawer screens). We have again used `headerShown: false` to avoid rendering a double header. 
 
