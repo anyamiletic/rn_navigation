@@ -1,8 +1,10 @@
-# BLOG POST
+# Combining Drawer, Tab and Stack navigators in React Navigation 6
 
-### INTRO
+Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases; the first one, a simpler scenario, is to utilize the Tab Navigator in a single Drawer route. then in a more complicated flow, we want the Tab bar to be visible and accessible inside *all* our Drawer routes. In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined.
 
-Adding navigation to a React Native application is greatly helped by using React Navigation library. It provides different types of navigators, with plenty of customization power. In some simple cases we can get by with using just one navigator, but often times we are presented with a challenge to combine multiple types in an app. Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases; the first one, a simpler scenario, is to utilize the Tab Navigator in a single Drawer route. then in a more complicated flow, we want the Tab bar to be visible and accessible inside *all* our Drawer routes. In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined.
+### Introduction
+
+Adding navigation to a React Native application is greatly helped by using React Navigation library. It provides different types of navigators, with plenty of customization power. In some simple cases we can get by with using just one navigator, but often times we are presented with a challenge to combine multiple types in an app. 
 
 The example chosen is to build an app for a Hotel chain. Some of the features include booking a room at one of the hotels, browsing the different locations and using reward points. Here is a preview of what we will be building:
 
@@ -10,9 +12,9 @@ The example chosen is to build an app for a Hotel chain. Some of the features in
 
 We can see right away the use of Drawer and Tab navigators. We will also implement each of the routes as a Stack Navigator, since we now that, for instance, the Book flow will contain multiple screens.
 
-### GETTING STARTED
+### Getting started
 
-*(if this is your first React Native project, please read the official [getting started guide](https://reactnative.dev/docs/0.60/enviroment-setup) before continuing)*
+*(if this is your first React Native project, please read the official [getting started guide](https://reactnative.dev/docs/getting-startedqa) before continuing)*
 
 Let's initialize a new project. In your terminal, navigate to en ampty directory and run the following command:
 
@@ -58,7 +60,7 @@ export default App
 
 ```
 
-### STACK AND DRAWER NAVIGATORS
+### Stack and Drawer navigators
 
 Now we can go about adding the different navigators to our app. Remember, for this first example we want the DrawerNavigator to be the main (always visible) navigator in our app, with the BottomTabNavigator visible if the Home route is focused in the Drawer. Let's begin by adding the following file structure in our project (all the files remain empty for now):
 
@@ -208,7 +210,7 @@ Now let's circle back to the `screenOptions` we defined in the stack navigators.
 
 The Home components header is rendered below the Drawer Navigators. This is because the parent navigator's UI is rendered on top of child navigator. Since we obviously want only one header, specifying `headerShown: false` for each of the stack navigator's `screenOptions` hides the default stack header. Note that the title displayed in the drawer header is `HomeStack`, not `Home`. If we were to navigate to another screen in HomeStack, the title would not change. Could we have kept the Stack header and hidden the Drawer header? Yes! But for now, we want the default Drawer header as it provides us with an easy way to open the drawer - by pressing the menu icon in the header.
 
-### TAB NAVIGATOR
+### Tab navigator
 
 We have added Drawer navigation to our app, and defined stack navigators with screens to add to our drawer menu. Now we need to add tab navigation to our Home Route. Firstly, lets define Book and Contact stack navigators in the same way as before:
 
@@ -324,7 +326,7 @@ Let's look at what we get:
 When we are in the first route in DrawerNavigator, we can see the bottom tabs and navigate between them. If we move to another route in the Drawer, the tabs are no longer visible (since the tab navigator is just one of the drawer screens). We have again used `headerShown: false` to avoid rendering a double header. 
 
 
-### HEADER AND TAB DESIGN
+### Header and Tab design
 
 We have implemented all our stacks, now we want to take care of a few common requirements. Firstly, let's add icons to our tabs. For this project we will use the `react-native-vector-icons` package to access FontAwesome icons. The full installation guide can be found at https://www.npmjs.com/package/react-native-vector-icons. Once the installation process is complete, we can edit our `BottomTabNavigator.js` as follows:
 
@@ -501,15 +503,9 @@ Next, we want to change the look of the header to fit better with our client's b
 
 Finally, let's customize the Drawer menu. We only want to change the route item styles for now, and unfortunately there isn't a simple DrawerNavigation prop that enables us to do this. Instead, we must pass a custom drawerContent function that enables us to render a completely custom component for each item. We are using the passed props to iterate through these items, but we could also render more routes using `<DrawerItem>`, or add an image component at the top of `<DrawerContentScrollView>`, or any number of other options.
 
-**** CONCLUSION **** 
+### Conclusion
 
-write conclusion
+In this tutorial, we have combined Drawer, Tab and Stack navigators to create a sample navigation flow. We have then customized a some navigation component to get the look and feel we needed. In the next section, we will explore the problem of having both the Drawer and Tab navigations always visible and connected.
 
 The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation)
-
-
-
-
-
-
 
