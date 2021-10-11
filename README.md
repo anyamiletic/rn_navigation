@@ -424,18 +424,19 @@ const CustomDrawerContent = (props) => {
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator screenOptions={({ navigation }) => ({
-      headerStyle: {
-        backgroundColor: '#551E18',
-        height: 50,
-      },
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.headerLeft}>
-          <Icon name="bars" size={20} color="#fff" />
-        </TouchableOpacity>
-      ),
-    })}
-                      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    <Drawer.Navigator
+      screenOptions={({ navigation }) => ({
+        headerStyle: {
+          backgroundColor: '#551E18',
+          height: 50,
+        },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.headerLeft}>
+            <Icon name="bars" size={20} color="#fff" />
+          </TouchableOpacity>
+        ),
+      })}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="HomeTabs" component={BottomTabNavigator} options={{
         title: 'Home',
