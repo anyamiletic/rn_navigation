@@ -602,7 +602,7 @@ export const routes = [
     name: screens.Contact,
     focusedRoute: screens.ContactStack,
     title: 'Contact Us',
-    showInTab: true,
+    showInTab: false,
     showInDrawer: false,
     icon: (focused) =>
       <Icon name="phone" size={30} color={focused ? '#551E18' : '#000'} />,
