@@ -507,7 +507,7 @@ Finally, let's customize the Drawer menu. We only want to change the route item 
 
 In this tutorial, we have combined Drawer, Tab and Stack navigators to create a sample navigation flow. We have then customized a some navigation component to get the look and feel we needed. In the next section, we will explore the problem of having both the Drawer and Tab navigations always visible and connected.
 
-The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation)
+The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation_project)
 
 ## Part 2
 
@@ -658,9 +658,9 @@ Regardless of the navigation style I always use `screens` and `routes` to have a
 const Tab = createBottomTabNavigator()
 
 const tabOptions = ({ route }) => {
-  const item = routes.find(routeItem => routeItem.name === route.name)
+  const item = routes.find(routeItem => routeItem.name === route.name) // get the route config object
 
-  if (!item.showInTab) {
+  if (!item.showInTab) { // hide this tab
     return {
       tabBarButton: () => <View style={{ width: 0 }} />,
       headerShown: false,
@@ -687,7 +687,8 @@ const BottomTabNavigator = () => {
       <Tab.Screen name={screens.BookStack} component={BookStackNavigator} />
       <Tab.Screen name={screens.ContactStack} component={ContactStackNavigator} />
 
-      <Tab.Screen name={screens.MyRewardsStack} component={MyRewardsStackNavigator} />
+      {/* new stacks */}
+      <Tab.Screen name={screens.MyRewardsStack} component={MyRewardsStackNavigator} /> 
       <Tab.Screen name={screens.LocationsStack} component={LocationsStackNavigator} />
     </Tab.Navigator>
   )
@@ -794,6 +795,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import DrawerNavigator from './src/navigation/DrawerNavigator'
 
+// store reference to navigation object
 const navigationRef = createRef()
 const nav = () => navigationRef.current
 
@@ -823,12 +825,12 @@ const DrawerNavigator = ({ nav }) => {
 
 ```javascript
 const CustomDrawerContent = (props) => {
-  const currentRouteName = props.nav()?.getCurrentRoute().name
+  const currentRouteName = props.nav()?.getCurrentRoute().name // get focused route name
   return (
     <DrawerContentScrollView {...props}>
       {
         routes.filter(route => route.showInDrawer).map((route) => {
-          const focusedRouteItem = routes.find(r => r.name === currentRouteName)
+          const focusedRouteItem = routes.find(r => r.name === currentRouteName) // get route item config object
           const focused = focusedRoute ?
             route.name === focusedRouteItem?.focusedRoute :
             route.name === screens.HomeStack
@@ -854,5 +856,8 @@ const CustomDrawerContent = (props) => {
 In the first render the `getCurrentRoute()` will return `undefined`, in that case we know that the focused route is `HomeStack`. We then, for each Drawer route, check if its name matches the `focusedRouteItem.focusedRoute`. For example, if we are on the `MyRewards` screen (or any other screen we would define in that stack), its `focusedRoute` would be `MyRewardsStack`. We get the desired result:
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinal.gif" alt="nav final" width="25%" height="25%" />
+
+
+The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation_project)
 
 
