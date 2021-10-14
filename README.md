@@ -509,3 +509,350 @@ In this tutorial, we have combined Drawer, Tab and Stack navigators to create a 
 
 The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation)
 
+## Part 2
+
+Implementing navigation such that the Drawer and Tab navigators are visible in every screen isn't a simple task. Simply put, the react navigation library is not designed in a way that this functionality is ready out-of-the-box.
+
+When working with nested navigators, the navigation UI of the child navigator is present *only* in the screens which it contains. Because of this, in order to have BottomTabNavigator in every screen, it must contain every screen.
+
+Since TabNavigator will contain all of our stacks, the only screen present in DrawerNavigator now becomes TabNavigator. But we still want to render 'Home', 'My Rewards' and 'Location' routes in the drawer. We'll refactor `CustomDrawerContent` to render a custom list of items. To get the focused route, we'll use a reference to the navigation object defined in `App.js`. Let's begin!
+
+### Route items
+
+For each screen we'll have a configuraton object that we'll store in an array. Remeber that TabNavigator is a screen as well, contained within DrawerNavigator as a `Drawer.Screen`:
+
+###### navigation/RouteItems.js
+```javascript
+import * as React from 'react'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+export const screens = {
+  HomeTab: 'HomeTab',
+  HomeStack: 'HomeStack',
+  Home: 'Home',
+  BookStack: 'BookStack',
+  Book: 'Book',
+  ContactStack: 'ContactStack',
+  Contact: 'Contact',
+  MyRewardsStack: 'MyRewardsStack',
+  MyRewards: 'MyRewards',
+  LocationsStack: 'LocationsStack',
+  Locations: 'Locations',
+}
+
+export const routes = [
+  {
+    name: screens.HomeTab,
+    focusedRoute: screens.HomeTab,
+    title: 'Home',
+    showInTab: false,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="home" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+  {
+    name: screens.HomeStack,
+    focusedRoute: screens.HomeStack,
+    title: 'Home',
+    showInTab: true,
+    showInDrawer: true,
+    icon: (focused) =>
+      <Icon name="home" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+  {
+    name: screens.Home,
+    focusedRoute: screens.HomeStack,
+    title: 'Home',
+    showInTab: true,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="home" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+
+  {
+    name: screens.BookStack,
+    focusedRoute: screens.BookStack,
+    title: 'Book Room',
+    showInTab: true,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="bed" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+
+  {
+    name: screens.Book,
+    focusedRoute: screens.BookStack,
+    title: 'Book Room',
+    showInTab: true,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="bed" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+
+  {
+    name: screens.ContactStack,
+    focusedRoute: screens.ContactStack,
+    title: 'Contact Us',
+    showInTab: true,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="phone" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+  {
+    name: screens.Contact,
+    focusedRoute: screens.ContactStack,
+    title: 'Contact Us',
+    showInTab: true,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="phone" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+
+  {
+    name: screens.MyRewardsStack,
+    focusedRoute: screens.MyRewardsStack,
+    title: 'My Rewards',
+    showInTab: false,
+    showInDrawer: true,
+    icon: (focused) =>
+      <Icon name="star" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+  {
+    name: screens.MyRewards,
+    focusedRoute: screens.MyRewardsStack,
+    title: 'My Rewards',
+    showInTab: false,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="star" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+
+  {
+    name: screens.LocationsStack,
+    focusedRoute: screens.LocationsStack,
+    title: 'Locations',
+    showInTab: false,
+    showInDrawer: true,
+    icon: (focused) =>
+      <Icon name="map-marker" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+  {
+    name: screens.Locations,
+    focusedRoute: screens.LocationsStack,
+    title: 'Locations',
+    showInTab: false,
+    showInDrawer: false,
+    icon: (focused) =>
+      <Icon name="map-marker" size={30} color={focused ? '#551E18' : '#000'} />,
+  },
+]
+
+```
+
+Regardless of the navigation style I always use `screens` and `routes` to have a centralized place to make changes. Let's jump to `BottomTabNavigator`:
+
+###### BottomTabNavigator.js
+```javascript
+...
+
+const Tab = createBottomTabNavigator()
+
+const tabOptions = ({ route }) => {
+  const item = routes.find(routeItem => routeItem.name === route.name)
+
+  if (!item.showInTab) {
+    return {
+      tabBarButton: () => <View style={{ width: 0 }} />,
+      headerShown: false,
+      tabBarStyle: styles.tabContainer,
+      title: item.title,
+    }
+  }
+
+  return {
+    tabBarIcon: ({ focused }) => item.icon(focused),
+    tabBarLabel: () => (
+      <Text style={styles.tabBarLabel}>{item.title || ''}</Text>
+    ),
+    headerShown: false,
+    tabBarStyle: styles.tabContainer,
+    title: item.title,
+  }
+}
+
+const BottomTabNavigator = () => {
+  return (
+    <Tab.Navigator screenOptions={tabOptions}>
+      <Tab.Screen name={screens.HomeStack} component={HomeStackNavigator} />
+      <Tab.Screen name={screens.BookStack} component={BookStackNavigator} />
+      <Tab.Screen name={screens.ContactStack} component={ContactStackNavigator} />
+
+      <Tab.Screen name={screens.MyRewardsStack} component={MyRewardsStackNavigator} />
+      <Tab.Screen name={screens.LocationsStack} component={LocationsStackNavigator} />
+    </Tab.Navigator>
+  )
+}
+
+const styles = StyleSheet.create({
+  tabBarLabel: {
+    color: '#292929',
+    fontSize: 12,
+  },
+  tabContainer: {
+    height: 60,
+  }
+})
+
+...
+```
+
+We've added 'MyRewardsStack' and 'LocationsStack' as tab screens. Only routes with `showInTab: true` will render a tab. If you comment-out the `if (!item.showInTab)` section, you'll get all of the tabs rendered:
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomTabAllRoutes.png" alt="nav finished" width="25%" height="25%" />
+
+With the full code, the page looks the same as before:
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomTabHiddenRoutes.png" alt="nav finished" width="25%" height="25%" />
+
+Note also that now the screen names aren't hardcoded, we're using the `screens` object to supply the names.
+
+Let's jump to DrawerNavigator:
+
+###### DrawerNavigator.js
+```javascript
+...
+
+const Drawer = createDrawerNavigator()
+
+const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      {
+        routes.filter(route => route.showInDrawer).map((route) => {
+          const focused = index === props.state.index
+          return (
+            <DrawerItem
+              key={route.name}
+              label={() => (
+                <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>
+                  {route.title}
+                </Text>
+              )}
+              onPress={() => props.navigation.navigate(route.name)}
+              style={[styles.drawerItem, focused ? styles.drawerItemFocused : null]}
+            />
+          )
+        })
+      }
+    </DrawerContentScrollView>
+  )
+}
+
+const DrawerNavigator = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={({ navigation }) => ({
+        headerStyle: {
+          backgroundColor: '#551E18',
+          height: 50,
+        },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.headerLeft}>
+            <Icon name="bars" size={20} color="#fff" />
+          </TouchableOpacity>
+        ),
+      })}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen name={screens.HomeTab} component={BottomTabNavigator} options={{
+        title: 'Home',
+        headerTitle: () => <Image source={require('../assets/hotel_logo.jpg')} />,
+        headerRight: () => (
+          <View style={styles.headerRight}>
+            <Icon name="bell" size={20} color="#fff" />
+          </View>
+        ),
+      }}/>
+    </Drawer.Navigator>
+  )
+}
+
+...
+```
+
+Now we've removed 'MyRewardsStack' and 'LocationsStack', and are rendering selected routes (in the previous code we rendered all of the `Drawer.Screen`s, which in this case would be only `HomeTabs` screen). We have an issue right now - the `focused` check will not work since `props.state.index` will always return `0`, we're always in `BottomTabNavigator` screen:
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFocusedRoute.gif" alt="nav finished" width="25%" height="25%" />
+
+As a workaround, we need to find out the current route, and we'll do that using a reference to the navigation object.
+
+###### App.js
+```javascript
+import React, { createRef } from 'react'
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+
+import DrawerNavigator from './src/navigation/DrawerNavigator'
+
+const navigationRef = createRef()
+const nav = () => navigationRef.current
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" />
+      <NavigationContainer ref={navigationRef}>
+          <DrawerNavigator nav={nav} />
+      </NavigationContainer>
+    </SafeAreaView>
+  )
+}
+```
+
+We're sending this reference as a prop to `DrawerNavigator` where we can use it to check the focused route:
+
+###### DrawerNavigator.js
+```javascript
+const DrawerNavigator = ({ nav }) => {
+  return (
+    <Drawer.Navigator
+      ...
+      drawerContent={(props) => <CustomDrawerContent {...props} nav={nav} />}
+      ...
+```
+
+```javascript
+const CustomDrawerContent = (props) => {
+  const currentRouteName = props.nav()?.getCurrentRoute().name
+  return (
+    <DrawerContentScrollView {...props}>
+      {
+        routes.filter(route => route.showInDrawer).map((route) => {
+          const focusedRouteItem = routes.find(r => r.name === currentRouteName)
+          const focused = focusedRoute ?
+            route.name === focusedRouteItem?.focusedRoute :
+            route.name === screens.HomeStack
+          return (
+            <DrawerItem
+              key={route.name}
+              label={() => (
+                <Text style={focused ? styles.drawerLabelFocused : styles.drawerLabel}>
+                  {route.title}
+                </Text>
+              )}
+              onPress={() => props.navigation.navigate(route.name)}
+              style={[styles.drawerItem, focused ? styles.drawerItemFocused : null]}
+            />
+          )
+        })
+      }
+    </DrawerContentScrollView>
+  )
+}
+```
+
+In the first render the `getCurrentRoute()` will return `undefined`, in that case we know that the focused route is `HomeStack`. We then, for each Drawer route, check if its name matches the `focusedRouteItem.focusedRoute`. For example, if we are on the `MyRewards` screen (or any other screen we would define in that stack), its `focusedRoute` would be `MyRewardsStack`. We get the desired result:
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinal.gif" alt="nav final" width="25%" height="25%" />
+
+
