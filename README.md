@@ -505,7 +505,7 @@ Finally, let's customize the Drawer menu. We only want to change the route item 
 
 ### Conclusion
 
-In this tutorial, we have combined Drawer, Tab and Stack navigators to create a sample navigation flow. We have then customized a some navigation component to get the look and feel we needed. In the next section, we will explore the problem of having both the Drawer and Tab navigations always visible and connected.
+In this tutorial, we have combined Drawer, Tab and Stack navigators to create a simple navigation flow. We have then, through `screenOptions`, supplied customization to get the look and feel we needed. In the next section, we will explore the problem of having both the Drawer and Tab navigations always visible and connected.
 
 The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation_project)
 
