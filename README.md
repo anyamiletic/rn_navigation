@@ -1,6 +1,11 @@
 # Combining Drawer, Tab and Stack navigators in React Navigation 6
 
-Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases; the first one, a simpler scenario, is to utilize the Tab Navigator in a single Drawer route. then in a more complicated flow, we want the Tab bar to be visible and accessible inside *all* our Drawer routes. In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined.
+Today we will be making use of the Drawer, Tab and Stack navigators. We will cover two cases:
+
+- a simpler scenario where we utilize the Tab Navigator in a single Drawer route 
+- a more complicated flow where we want the Tab bar to be visible and accessible inside *all* our Drawer routes. 
+
+In this second example, we will try to overcome a design restriction of React Navigation - the different Navigators, if used together, can only be nested inside one another, and therefore can't be intertwined.
 
 ### Introduction
 
@@ -28,7 +33,7 @@ Next, let's install react navigation and its dependencies:
 $ npm install @react-navigation/native react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated @react-navigation/stack @react-navigation/drawer @react-navigation/bottom-tabs
 ```
 
-If you're developing for IOS, we also need to install the pods:
+If you're developing for IOS, you also need to install the pods:
 
 `$ cd ios; npx pod install; cd ..`
 
@@ -200,15 +205,15 @@ const App = () => {
 
 ```
 
-We can see the result now. We have React Navigations default header, an icon to open the drawer, and our stacks in the drawer menu. We can navigate freely between those stacks. 
+We can see the result now. We have React Navigation's default header, an icon to open the drawer, and our stacks in the drawer menu. We can navigate freely between those stacks. 
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavInitial.gif" alt="folder structure" width="25%" height="25%" />
 
-Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in HomeStackNavigator and observe what happens:
+Now let's circle back to the `screenOptions` we defined in the stack navigators. Try setting `headerShown: true` in `HomeStackNavigator` and observe what happens:
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/drawerNavigatorWithoutScreenOptions.png" alt="double header" width="25%" height="25%" />
 
-The Home components header is rendered below the Drawer Navigators. This is because the parent navigator's UI is rendered on top of child navigator. Since we obviously want only one header, specifying `headerShown: false` for each of the stack navigator's `screenOptions` hides the default stack header. Note that the title displayed in the drawer header is `HomeStack`, not `Home`. If we were to navigate to another screen in HomeStack, the title would not change. Could we have kept the Stack header and hidden the Drawer header? Yes! But for now, we want the default Drawer header as it provides us with an easy way to open the drawer - by pressing the menu icon in the header.
+The Home component's header is rendered below the Drawer Navigator's. This is because the parent navigator's UI is rendered on top of child navigator. Since we obviously want only one header, specifying `headerShown: false` for each of the stack navigator's `screenOptions` hides the default stack header. Note that the title displayed in the drawer header is `HomeStack`, not `Home`. If we were to navigate to another screen in HomeStack, the title would not change. Could we have kept the Stack header and hidden the Drawer header? Yes! But for now, we want the default Drawer header as it provides us with an easy way to open the drawer - by pressing the menu icon in the header.
 
 ### Tab navigator
 
@@ -328,7 +333,7 @@ When we are in the first route in DrawerNavigator, we can see the bottom tabs an
 
 ### Header and Tab design
 
-We have implemented all our stacks, now we want to take care of a few common requirements. Firstly, let's add icons to our tabs. For this project we will use the `react-native-vector-icons` package to access FontAwesome icons. The full installation guide can be found at https://www.npmjs.com/package/react-native-vector-icons. Once the installation process is complete, we can edit our `BottomTabNavigator.js` as follows:
+We have implemented all our stacks, now we want to implement a few common requirements. Firstly, let's add icons to our tabs. For this project we will use the `react-native-vector-icons` package to access FontAwesome icons. The full installation guide can be found at https://www.npmjs.com/package/react-native-vector-icons. Once the installation process is complete, we can edit our `BottomTabNavigator.js` as follows:
 
 ```javascript
 import * as React from 'react'
@@ -383,7 +388,7 @@ export default BottomTabNavigator
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/bottomNavFinished.png" alt="bottom tab navigator" width="25%" height="25%" />
 
-For each stack we have specified an icon and a tab label, meaning that for every screen in the Home stack, we will have a highlighted home icon and a Home label. There are many possibilities with `options` and `screenOptions` properties, some of which are explored at https://reactnavigation.org/docs/screen-options/.
+For each stack we have specified an icon and a tab label. `tabBarIcon` recieves the `focused` prop, which we can use to highlight the current route (`tabBarLabel` can also recieve this prop). There are many possibilities with `options` and `screenOptions` properties, some of which are explored at https://reactnavigation.org/docs/screen-options/.
 Let's use `screenOptions` in Drawer Navigator to change the header and route names in the drawer menu:
 
 ###### DrawerNavigator.js:
@@ -495,7 +500,6 @@ export default DrawerNavigator
 ```
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinished.gif" alt="nav finished" width="25%" height="25%" />
-<a href='https://www.freepik.com/vectors/logo'>Logo vector created by rawpixel.com - www.freepik.com</a>
 
 Let's breakdown all of the changes. First of all, looking at the Drawer Screens, we can change the header of each drawer item separately. You might not want to display a title when the user is in the Tab navigator, but maybe show the company's logo instead. The `headerTitle` prop accepts a string as well as a function - giving us a lot of posibilites for customization. Furthemore, the title shown in the header can be different than the one shown in the drawer menu.
 
@@ -510,6 +514,10 @@ In this tutorial, we have combined Drawer, Tab and Stack navigators to create a 
 The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation_project)
 
 ## Part 2
+
+*This is part 2 of a 2-part react navigation tutorial **Combining Drawer, Tab and Stack navigators in React Navigation 6**. If you haven't read that yet, please read it first [here](https://github.com/anyamiletic/rn_navigation/blob/main/README.md)*
+
+<img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinal.gif" alt="nav final" width="25%" height="25%" />
 
 Implementing navigation such that the Drawer and Tab navigators are visible in every screen isn't a simple task. Simply put, the react navigation library is not designed in a way that this functionality is ready out-of-the-box.
 
@@ -857,7 +865,15 @@ In the first render the `getCurrentRoute()` will return `undefined`, in that cas
 
 <img src="https://github.com/anyamiletic/rn_navigation/blob/main/assets/navigationFinal.gif" alt="nav final" width="25%" height="25%" />
 
+### Conclusion
+
+Using react navigation, we have implemented Drawer, Tab and Stack navigation such that the drawer and bottom tab UI is visible in every app route. We've added custom styles and components for Tabs, Headers and Drawer Items. We have also centralized our configuration for each route.
+
+#### What's next?
+
+For further customization, you can start by exploring the `screenOptions` and `options` props. Perhaps add a `HeaderRight` component to Drawer's `screenOptions`, or add a `tabBarBadge` to Tab Navigators screen options. 
+
+When adding a new screen to any stack (or adding a new stack) make sure to add that screen's config to `routes` to make sure our navigators access all of the required information. Happy coding!
+
 
 The complete project can be found on [github](https://github.com/anyamiletic/rn_navigation_project)
-
-
